@@ -1,4 +1,5 @@
 #include "analyzer/analyzer.h"
+#include "options_parser/config.h"
 #include "options_parser/options_parser.h"
 
 int main(int argc, char** argv)
@@ -7,7 +8,7 @@ int main(int argc, char** argv)
     auto parse_result = options_parser.parse_config(argc, argv);
     if (parse_result > 0)
     {
-        return parse_result;
+        return (parse_result == config::HELP_FOUND_CODE) ? 0 : parse_result;
     }
 
     analyzer::NetworkAnalyzer network_analyzer(options_parser.get_options());

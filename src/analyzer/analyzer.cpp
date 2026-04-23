@@ -32,23 +32,28 @@ auto NetworkAnalyzer::start_analyze() -> int32_t
 void NetworkAnalyzer::process_packet(const struct ::pcap_pkthdr* h,
                                      const u_char* p)
 {
-    auto packet = std::span<const std::byte>(
+    auto data = std::span<const std::byte>(
         reinterpret_cast<const std::byte*>(p), h->len);
-    if (packet.size() < sizeof(ether_header))
+
+    if (data.size() < sizeof(EthernetHeader))
         return;
 
-    auto eth = reinterpret_cast<const ether_header*>(packet.data());
+    auto eth = reinterpret_cast<const EthernetHeader*>(data.data());
 
-    if (ntohs(eth->ether_type) == ETHERTYPE_IP)
+    if (ntohs(eth->type) == 0x0800)
     {
-        auto ip_data = packet.subspan(sizeof(ether_header));
-        if (ip_data.size() < sizeof(iphdr))
+        auto ip_data = data.subspan(sizeof(EthernetHeader));
+        if (ip_data.size() < sizeof(IPv4Header))
             return;
 
-        auto ip = reinterpret_cast<const iphdr*>(ip_data.data());
-        fmt::print("SRC: {} | DST: {} | PROTO: {}\n",
-                   inet_ntoa(*(struct in_addr*)&ip->saddr),
-                   inet_ntoa(*(struct in_addr*)&ip->daddr), (int)ip->protocol);
+        auto ip = reinterpret_cast<const IPv4Header*>(ip_data.data());
+
+        fmt::print("SRC: {}.{}.{}.{} | DST: {}.{}.{}.{} | PROTO: {}\n",
+                   (ip->saddr & 0xFF), (ip->saddr >> 8 & 0xFF),
+                   (ip->saddr >> 16 & 0xFF), (ip->saddr >> 24 & 0xFF),
+                   (ip->daddr & 0xFF), (ip->daddr >> 8 & 0xFF),
+                   (ip->daddr >> 16 & 0xFF), (ip->daddr >> 24 & 0xFF),
+                   (int)ip->protocol);
     }
 }
 
