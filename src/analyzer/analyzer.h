@@ -1,35 +1,33 @@
 #pragma once
+#include "options_parser.h"
 #include <arpa/inet.h>
+#include <concepts>
 #include <cstddef>
 #include <fmt/core.h>
 #include <netinet/ether.h>
 #include <netinet/ip.h>
+#include <pcap.h>
 #include <span>
 
-template <typename T>
-concept NetworkHeader = std::is_standard_layout_v<T>;
+namespace analyzer
+{
 
-class Analyzer
+class NetworkAnalyzer
 {
 public:
-    static void process_packet(std::span<const std::byte> packet)
-    {
-        if (packet.size() < sizeof(ether_header))
-            return;
+    NetworkAnalyzer() = delete;
+    NetworkAnalyzer(const NetworkAnalyzer&) = delete;
+    NetworkAnalyzer(NetworkAnalyzer&&) = delete;
+    explicit NetworkAnalyzer(const options_parser::Options& options);
 
-        auto eth = reinterpret_cast<const ether_header *>(packet.data());
+    auto start_analyze() -> int32_t;
 
-        if (ntohs(eth->ether_type) == ETHERTYPE_IP)
-        {
-            auto ip_data = packet.subspan(sizeof(ether_header));
-            if (ip_data.size() < sizeof(iphdr))
-                return;
-
-            auto ip = reinterpret_cast<const iphdr *>(ip_data.data());
-            fmt::print("SRC: {} | DST: {} | PROTO: {}\n",
-                       inet_ntoa(*(struct in_addr *)&ip->saddr),
-                       inet_ntoa(*(struct in_addr *)&ip->daddr),
-                       (int)ip->protocol);
-        }
-    }
+private:
+    void process_packet(const struct ::pcap_pkthdr* h, const u_char* p);
+    static void static_wrapper_callback(u_char* user,
+                                        const struct ::pcap_pkthdr* h,
+                                        const u_char* p);
+    options_parser::Options options_;
 };
+
+} // namespace analyzer

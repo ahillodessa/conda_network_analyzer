@@ -25,6 +25,6 @@ requirements:
     - fmt
 
 about:
-  home: https://github.com
+  home: https://github.com/ahillodessa/conda_network_analyzer
   summary: Network analyzer using C++20 and Conda
   license: MIT
