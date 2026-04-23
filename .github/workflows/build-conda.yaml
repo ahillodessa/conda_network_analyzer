@@ -48,8 +48,23 @@ jobs:
 
       - name: Build Conda Package
         run: |
-          # pixi exec rattler-build build --recipe conda-recipe/github_meta.yaml --output-dir dist
           pixi exec rattler-build build --recipe conda-recipe/github_meta.yaml -c conda-forge --no-build-id --channel conda-forge --output-dir dist
+  
+      # run with real output on ubuntu only
+      - name: Integration Test (Real Capture)
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          pixi exec -c ./dist -c conda-forge --spec network-analyzer --spec libpcap --spec fmt -- \
+            bash -c "
+              IFACE=\$(ip -o link show | awk -F': ' '{print \$2}' | grep -v 'lo' | head -n 1)
+              echo \"Using interface: \$IFACE\"
+              
+              ping -c 5 google.com > /dev/null &
+              
+              BINARY_PATH=\$(which network-analyzer)
+              sudo \$BINARY_PATH -i \$IFACE -n 5
+            "
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

@@ -21,6 +21,8 @@ auto NetworkAnalyzer::start_analyze() -> int32_t
     }
 
     fmt::print("Starting capture...\n");
+    fmt::print("Interface: {}, packet count: {}\n", options_.interface_,
+               options_.packet_count_);
     pcap_loop(handle, options_.packet_count_,
               &NetworkAnalyzer::static_wrapper_callback,
               reinterpret_cast<u_char*>(this));
