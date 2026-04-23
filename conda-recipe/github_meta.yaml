@@ -1,0 +1,56 @@
+context:
+  name: network-analyzer
+  version: "0.1.1"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script:
+    - if: unix
+      then: bash conda-recipe/build.sh
+    - if: win
+      then: call conda-recipe/bld.bat
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - cmake
+    - ninja
+
+  host:
+    # - if: unix
+    #   then: libpcap
+    # - if: win
+    #   then: winpcap-sdk
+    - libpcap
+    - fmt
+    - cli11
+
+  run:
+    # - if: unix
+    #   then: libpcap
+    # - if: win
+    #   then: winpcap-sdk
+    - libpcap
+    - fmt
+
+tests:
+  - script:
+    - network-analyzer --help
+
+about:
+  homepage: https://github.com/ahillodessa/conda_network_analyzer
+  summary: Small network analyzer to show network packages
+  license: MIT
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - avetroumov
