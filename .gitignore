@@ -1,0 +1,30 @@
+# --- Build files ---
+build/
+bin/
+lib/
+*.o
+*.a
+*.so
+*.out
+
+# --- VS Code ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.history/
+*.code-workspace
+
+# --- Conda ---
+conda-bld/
+_build/
+_test/
+.conda_lock.yml
+*.tar.bz2
+anaconda_upload.log
+
+.DS_Store
+*.log
+tmp/
+
+_deps/

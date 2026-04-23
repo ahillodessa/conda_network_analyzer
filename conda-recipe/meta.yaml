@@ -1,0 +1,30 @@
+package:
+  name: net_analyzer
+  version: "1.0.0"
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script:
+    - mkdir build && cd build
+    - cmake -DCMAKE_INSTALL_PREFIX=$PREFIX ..
+    - make install
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - cmake
+    - make
+  host:
+    - libpcap
+    - fmt
+  run:
+    - libpcap
+    - fmt
+
+about:
+  home: https://github.com
+  summary: Network analyzer using C++20 and Conda
+  license: MIT
