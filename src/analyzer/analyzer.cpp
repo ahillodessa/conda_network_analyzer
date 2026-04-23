@@ -57,6 +57,9 @@ void NetworkAnalyzer::static_wrapper_callback(u_char* user,
                                               const u_char* p)
 {
     auto* self = reinterpret_cast<NetworkAnalyzer*>(user);
-    self->process_packet(h, p);
+    if (self)
+    {
+        self->process_packet(h, p);
+    }
 }
 } // namespace analyzer
