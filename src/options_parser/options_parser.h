@@ -8,7 +8,6 @@ namespace options_parser
 struct Options
 {
     std::string interface_{config::DEFAULT_INTERFACE};
-    std::string port_;
     int32_t packet_count_{config::DEFAULT_PORT_COUNT};
 };
 

@@ -25,25 +25,17 @@ requirements:
     - ninja
 
   host:
-    # - if: unix
-    #   then: libpcap
-    # - if: win
-    #   then: winpcap-sdk
     - libpcap
     - fmt
     - cli11
 
   run:
-    # - if: unix
-    #   then: libpcap
-    # - if: win
-    #   then: winpcap-sdk
     - libpcap
     - fmt
 
 tests:
   - script:
-    - network-analyzer --help
+    - network-analyzer -h
 
 about:
   homepage: https://github.com/ahillodessa/conda_network_analyzer
