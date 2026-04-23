@@ -3,3 +3,7 @@ BreakBeforeBraces: Allman
 IndentWidth: 4
 AllowShortBlocksOnASingleLine: false
 AccessModifierOffset: -4
+PointerAlignment: Left
+MaxEmptyLinesToKeep: 2
+SeparateDefinitionBlocks: Always
+KeepEmptyLinesAtTheStartOfBlocks: true

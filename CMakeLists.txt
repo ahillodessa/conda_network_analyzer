@@ -11,13 +11,14 @@ find_library(PCAP_LIB pcap REQUIRED)
 find_path(PCAP_INCLUDE_DIR pcap.h REQUIRED)
 
 add_executable(${PROJECT_NAME}
+    src/analyzer/analyzer.cpp
     src/options_parser/options_parser.cpp
     src/main.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    analyzer
-    options_parser
+    src/analyzer
+    src/options_parser
     ${PCAP_INCLUDE_DIR}
 )
 

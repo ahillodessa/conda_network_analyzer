@@ -2,20 +2,26 @@
 #include "config.h"
 #include <CLI/CLI.hpp>
 
+namespace options_parser
+{
+
+struct Options
+{
+    std::string interface_{config::DEFAULT_INTERFACE};
+    std::string port_;
+    int32_t packet_count_{config::DEFAULT_PORT_COUNT};
+};
+
 class OptionsParser
 {
 public:
     OptionsParser();
-    auto parse_config(int argc, char **argv) -> int32_t;
-    auto get_interface() const noexcept -> std::string;
-    auto get_port() const noexcept -> std::string;
-    auto get_packet_count() const noexcept -> int32_t;
+    auto parse_config(int argc, char** argv) -> int32_t;
+    auto get_options() const noexcept -> Options;
 
 private:
-    static constexpr int32_t help_found_code{100};
-    std::string interface_{config::DEFAULT_INTERFACE};
-    std::string port_;
-    int32_t packet_count_{config::DEFAULT_PORT_COUNT};
-
     CLI::App cli_app_;
+    Options options_;
 };
+
+} // namespace options_parser
