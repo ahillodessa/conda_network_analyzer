@@ -1,5 +1,5 @@
 {% set name = "network-analyzer" %}
-{% set version = "0.1.1" %}
+{% set version = "0.1.0" %}
 
 package:
   name: {{ name|lower }}
@@ -21,18 +21,16 @@ requirements:
 
   host:
     - libpcap
-    - winpcap-sdk # [win]
     - fmt
     - cli11
 
   run:
     - libpcap
     - fmt
-    - cli11
 
 tests:
   - script:
-    - network-analyzer
+    - network-analyzer -h
 
 about:
   homepage: https://github.com/ahillodessa/conda_network_analyzer
