@@ -6,8 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  path: ..
-
+  url: "https://github.com/ahillodessa/conda_network_analyzer/archive/refs/tags/v0.1.0.tar.gz"
+  sha256: A77DA0ECB40526302B9FFACD9E0B8D83B9C2CD26EE8076B8E2AC87F8A1FF5BDC
 build:
   number: 0
 
